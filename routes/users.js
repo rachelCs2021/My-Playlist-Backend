@@ -1,7 +1,3 @@
-
-// const express = require("express");
-// const jwt = require("jsonwebtoken");
-// const bcrypt = require("bcrypt");
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -15,7 +11,6 @@ router.post("/register", async (req, res) => {
             userName: req.body.userName,
         });
         if (userAlreadyExists) {
-
             return res.status(401).send("user name already Exists");
         }
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -38,18 +33,20 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+
     try {
         console.log(req.body);
         const user = await User.findOne({ userName: req.body.userName });
         if (!user) return res.status(400).json({ message: "Invalid credentials" });
         const match = await bcrypt.compare(req.body.password, user.password);
-        console.log(match);
-        // const matchPassword = req.body.password === 
+        console.log("match:", match);
+  
         if (match) {
             const accessToken = jwt.sign(JSON.stringify(user), process.env.TOKEN_SECRET);
             console.log(accessToken);
             res.json({ accessToken });
         } else {
+            console.log("error");
             res.status(400).json({ message: "Invalid credentials" });
         }
     } catch (e) {

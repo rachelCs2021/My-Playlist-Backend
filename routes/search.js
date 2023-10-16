@@ -16,6 +16,7 @@ const getKeySafe = (getFn) => {
 router.get("/", async (req, res) => {
     console.log("search song");
     const { q } = req.query;
+    console.log(q);
     let ytInitialData = null;
     const { data } = await axios.get(
         encodeURI(`https://www.youtube.com/results?search_query=${q}`)

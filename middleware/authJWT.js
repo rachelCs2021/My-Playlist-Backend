@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const authJWT = (req, res, next) => {
-    const authHeader = req.headers.authorization
+    console.log("reqqqq");
+    console.log("auth", req.headers.authorization);
+    const authHeader = req.headers.authorization;
     if (authHeader) {
         const token = authHeader.split(" ")[1]
         jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
@@ -15,7 +17,5 @@ const authJWT = (req, res, next) => {
         res.sendStatus(401)
     }
 }
-
-
 
 module.exports = authJWT;

@@ -3,25 +3,11 @@ const express = require("express");
 const router = express.Router();
 const Song = require("../models/song");
 const jwt = require("jsonwebtoken");
-
-const authJWT = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-        const token = authHeader.split(" ")[1];
-        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-            if (err) {
-                return res.sendStatus(403);
-            }
-            req.user = user;
-            next();
-        });
-    } else {
-        res.sendStatus(401);
-    }
-};
+const authJWT = require("../middleware/authJWT")
 
 router.post("/", async (req, res) => {
     console.log(req.body);
+    console.log("user 111", req.body.user);
     let newSong = await new Song({ ...req.body }).save();
     res.send(newSong);
 });
